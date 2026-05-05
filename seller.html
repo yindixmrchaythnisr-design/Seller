@@ -3,118 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seller Console | Minimal Market</title>
+    <title>Seller Setup | Marketplace</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }</style>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
 </head>
-<body class="bg-gray-50 text-gray-900 min-h-screen">
+<body class="bg-[#111214] text-white h-screen flex overflow-hidden">
 
-    <header class="bg-slate-900 text-white p-4 shadow-md flex justify-between items-center sticky top-0 z-10">
-        <div class="flex items-center gap-4">
-            <h1 class="text-lg font-semibold tracking-wide border-r border-gray-600 pr-4">Marketplace<span class="text-gray-400 font-normal">Console</span></h1>
-            <span class="text-sm font-medium text-gray-300">Seller Dashboard</span>
+    <aside class="w-[80px] flex-shrink-0 bg-[#232527] border-r border-[#393b3d] flex flex-col items-center py-4 z-20">
+        <div class="mb-8 cursor-pointer">
+            <svg class="w-10 h-10 text-[#00b06f] transform rotate-[50deg]" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H24V24H0V0ZM8 8H16V16H8V8Z" />
+            </svg>
         </div>
-        <button class="text-sm bg-slate-800 border border-slate-700 rounded px-3 py-1.5 hover:bg-slate-700 transition">Sign Out</button>
-    </header>
+        <nav class="flex flex-col gap-6 w-full">
+            <a href="#" class="flex flex-col items-center gap-1 group">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center text-[#bdbebe] group-hover:bg-[#393b3d] group-hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                </div>
+                <span class="text-[11px] font-semibold text-[#bdbebe] group-hover:text-white">Dashboard</span>
+            </a>
+            <a href="#" class="flex flex-col items-center gap-1 group">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center bg-[#393b3d] text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                </div>
+                <span class="text-[11px] font-semibold text-white">Setup</span>
+            </a>
+        </nav>
+    </aside>
 
-    <main class="max-w-6xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-3 gap-6 mt-4">
-        
-        <section class="lg:col-span-1">
-            <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-5">
-                <h2 class="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-100">Create New Listing</h2>
+    <main class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+        <header class="h-[70px] px-8 flex items-center justify-between border-b border-[#232527] sticky top-0 bg-[#111214]/95 backdrop-blur z-10">
+            <h1 class="text-[24px] font-bold text-white tracking-tight">Seller Profile Setup</h1>
+            <button class="bg-[#232527] border border-[#393b3d] text-white px-4 py-2 text-sm font-semibold rounded-md hover:bg-[#393b3d] transition-colors">
+                Save Draft
+            </button>
+        </header>
+
+        <div class="p-8 flex justify-center">
+            <div class="w-full max-w-2xl bg-[#232527] rounded-xl p-8 shadow-xl">
+                <h2 class="text-xl font-bold mb-2 text-white">Action Required: Complete Your Profile</h2>
+                <p class="text-[14px] text-[#bdbebe] mb-8">Buyers and drivers need this information to accurately calculate shipping, display product criteria, and route orders.</p>
                 
-                <form class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Product Title</label>
-                        <input type="text" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500" placeholder="e.g., Wireless Mouse">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                        <textarea class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500" rows="3" placeholder="Condition, specs, etc."></textarea>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-6">
+                    <div class="grid grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Price ($)</label>
-                            <input type="number" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500" placeholder="0.00">
+                            <label class="block text-[13px] font-semibold text-[#bdbebe] mb-1.5">Seller / Business Age</label>
+                            <input type="number" class="w-full bg-[#111214] border border-[#393b3d] rounded-md px-3 py-2.5 focus:border-[#00b06f] focus:outline-none text-[15px] text-white" placeholder="e.g. 25" />
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Stock</label>
-                            <input type="number" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500" placeholder="1">
+                            <label class="block text-[13px] font-semibold text-[#bdbebe] mb-1.5">Default Price Rate ($)</label>
+                            <input type="number" class="w-full bg-[#111214] border border-[#393b3d] rounded-md px-3 py-2.5 focus:border-[#00b06f] focus:outline-none text-[15px] text-white" placeholder="e.g. 50.00" />
                         </div>
                     </div>
-                    
-                    <div class="pt-2 flex gap-3">
-                        <button type="button" class="flex-1 bg-gray-100 text-gray-700 border border-gray-300 rounded px-4 py-2 text-sm font-medium hover:bg-gray-200 transition">Clear</button>
-                        <button type="button" class="flex-1 bg-green-600 text-white rounded px-4 py-2 text-sm font-medium hover:bg-green-700 transition shadow-sm">Publish</button>
-                    </div>
-                </form>
-            </div>
-        </section>
 
-        <section class="lg:col-span-2 space-y-6">
-            
-            <div class="bg-white border border-gray-200 rounded-lg shadow-sm">
-                <div class="p-4 border-b border-gray-200 bg-gray-50 rounded-t-lg flex justify-between items-center">
-                    <h2 class="text-md font-semibold text-gray-800">Action Required: Pending Bids</h2>
-                    <span class="bg-yellow-100 text-yellow-800 text-xs font-bold px-2 py-1 rounded-full">2 New</span>
-                </div>
-                <div class="p-0 divide-y divide-gray-100">
-                    
-                    <div class="p-4 flex items-center justify-between hover:bg-gray-50 transition">
+                    <div class="my-6 border-t border-[#393b3d]"></div>
+                    <h3 class="text-md font-bold text-white mb-4">Standard Package Specs</h3>
+
+                    <div class="grid grid-cols-2 gap-6">
                         <div>
-                            <p class="text-sm font-medium text-gray-900">Offer: <span class="text-green-600 font-bold">$45.00</span> <span class="text-gray-500 font-normal">on Vintage Camera</span></p>
-                            <p class="text-xs text-gray-500 mt-1">From: @alex_dev • 10 mins ago</p>
+                            <label class="block text-[13px] font-semibold text-[#bdbebe] mb-1.5">Average Size (L x W x H inches)</label>
+                            <input type="text" class="w-full bg-[#111214] border border-[#393b3d] rounded-md px-3 py-2.5 focus:border-[#00b06f] focus:outline-none text-[15px] text-white" placeholder="10 x 8 x 6" />
                         </div>
-                        <div class="flex gap-2">
-                            <button class="bg-white border border-red-300 text-red-600 hover:bg-red-50 rounded px-3 py-1.5 text-xs font-medium transition">Reject</button>
-                            <button class="bg-green-600 text-white hover:bg-green-700 rounded px-3 py-1.5 text-xs font-medium transition shadow-sm">Accept & Ship</button>
+                        <div>
+                            <label class="block text-[13px] font-semibold text-[#bdbebe] mb-1.5">Average Weight (lbs)</label>
+                            <input type="number" class="w-full bg-[#111214] border border-[#393b3d] rounded-md px-3 py-2.5 focus:border-[#00b06f] focus:outline-none text-[15px] text-white" placeholder="e.g. 2.5" />
                         </div>
                     </div>
 
+                    <button class="w-full bg-[#00b06f] hover:bg-[#008f5a] text-white rounded-md px-4 py-3 font-bold text-[16px] mt-8 transition-colors">
+                        Confirm & Save Profile
+                    </button>
                 </div>
             </div>
-
-            <div class="bg-white border border-gray-200 rounded-lg shadow-sm">
-                <div class="p-4 border-b border-gray-200 bg-gray-50 rounded-t-lg">
-                    <h2 class="text-md font-semibold text-gray-800">Your Inventory</h2>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider border-b border-gray-200">
-                                <th class="p-4 font-medium">Item Name</th>
-                                <th class="p-4 font-medium">Status</th>
-                                <th class="p-4 font-medium">Price</th>
-                                <th class="p-4 font-medium text-right">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-100 text-sm">
-                            <tr>
-                                <td class="p-4 font-medium text-gray-900">Mechanical Keyboard</td>
-                                <td class="p-4"><span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Active</span></td>
-                                <td class="p-4 text-gray-600">$120.00</td>
-                                <td class="p-4 text-right">
-                                    <button class="text-blue-600 hover:text-blue-800 text-sm font-medium mr-3">Edit</button>
-                                    <button class="text-red-600 hover:text-red-800 text-sm font-medium">Remove</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="p-4 font-medium text-gray-900">Desk Lamp</td>
-                                <td class="p-4"><span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">In Delivery</span></td>
-                                <td class="p-4 text-gray-600">$25.00</td>
-                                <td class="p-4 text-right">
-                                    <button class="text-gray-400 cursor-not-allowed text-sm font-medium" disabled>Locked</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-        </section>
+        </div>
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase-client.js"></script>
 </body>
 </html>
