@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seller Setup | Marketplace</title>
+    <title>Seller Center | Marketplace</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
@@ -19,67 +19,161 @@
             </svg>
         </div>
         <nav class="flex flex-col gap-6 w-full">
-            <a href="#" class="flex flex-col items-center gap-1 group">
-                <div class="w-10 h-10 rounded-full flex items-center justify-center text-[#bdbebe] group-hover:bg-[#393b3d] group-hover:text-white transition-colors">
+            <a href="#" onclick="showSection('dashboard')" class="flex flex-col items-center gap-1 group">
+                <div id="nav-dash" class="w-10 h-10 rounded-full flex items-center justify-center bg-[#393b3d] text-white">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
                 </div>
-                <span class="text-[11px] font-semibold text-[#bdbebe] group-hover:text-white">Dashboard</span>
+                <span class="text-[11px] font-semibold">Dashboard</span>
             </a>
-            <a href="#" class="flex flex-col items-center gap-1 group">
-                <div class="w-10 h-10 rounded-full flex items-center justify-center bg-[#393b3d] text-white">
+            <a href="#" onclick="showSection('setup')" class="flex flex-col items-center gap-1 group">
+                <div id="nav-setup" class="w-10 h-10 rounded-full flex items-center justify-center text-[#bdbebe] group-hover:bg-[#393b3d] group-hover:text-white transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                 </div>
-                <span class="text-[11px] font-semibold text-white">Setup</span>
+                <span class="text-[11px] font-semibold text-[#bdbebe]">Settings</span>
             </a>
         </nav>
     </aside>
 
     <main class="flex-1 flex flex-col min-w-0 overflow-y-auto">
-        <header class="h-[70px] px-8 flex items-center justify-between border-b border-[#232527] sticky top-0 bg-[#111214]/95 backdrop-blur z-10">
-            <h1 class="text-[24px] font-bold text-white tracking-tight">Seller Profile Setup</h1>
-            <button class="bg-[#232527] border border-[#393b3d] text-white px-4 py-2 text-sm font-semibold rounded-md hover:bg-[#393b3d] transition-colors">
-                Save Draft
-            </button>
-        </header>
+        <div id="section-setup" class="hidden">
+            <header class="h-[70px] px-8 flex items-center justify-between border-b border-[#232527] sticky top-0 bg-[#111214]/95 backdrop-blur z-10">
+                <h1 class="text-[24px] font-bold text-white tracking-tight">Seller Profile Setup</h1>
+            </header>
+            <div class="p-8 flex justify-center">
+                <div class="w-full max-w-2xl bg-[#232527] rounded-xl p-8 shadow-xl">
+                    <div class="space-y-6">
+                        <div class="grid grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-[13px] font-semibold text-[#bdbebe] mb-1.5">Seller Age</label>
+                                <input type="number" id="setup-age" class="w-full bg-[#111214] border border-[#393b3d] rounded-md px-3 py-2.5 focus:border-[#00b06f] text-white outline-none" />
+                            </div>
+                            <div>
+                                <label class="block text-[13px] font-semibold text-[#bdbebe] mb-1.5">Price Rate ($)</label>
+                                <input type="number" id="setup-rate" class="w-full bg-[#111214] border border-[#393b3d] rounded-md px-3 py-2.5 focus:border-[#00b06f] text-white outline-none" />
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-[13px] font-semibold text-[#bdbebe] mb-1.5">Avg Size (inches)</label>
+                                <input type="text" id="setup-size" class="w-full bg-[#111214] border border-[#393b3d] rounded-md px-3 py-2.5 focus:border-[#00b06f] text-white outline-none" />
+                            </div>
+                            <div>
+                                <label class="block text-[13px] font-semibold text-[#bdbebe] mb-1.5">Avg Weight (lbs)</label>
+                                <input type="number" id="setup-weight" class="w-full bg-[#111214] border border-[#393b3d] rounded-md px-3 py-2.5 focus:border-[#00b06f] text-white outline-none" />
+                            </div>
+                        </div>
+                        <button onclick="saveProfile()" class="w-full bg-[#00b06f] hover:bg-[#008f5a] text-white rounded-md py-3 font-bold mt-4 transition-colors">Save Settings</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <div class="p-8 flex justify-center">
-            <div class="w-full max-w-2xl bg-[#232527] rounded-xl p-8 shadow-xl">
-                <h2 class="text-xl font-bold mb-2 text-white">Action Required: Complete Your Profile</h2>
-                <p class="text-[14px] text-[#bdbebe] mb-8">Buyers and drivers need this information to accurately calculate shipping, display product criteria, and route orders.</p>
-                
-                <div class="space-y-6">
-                    <div class="grid grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-[13px] font-semibold text-[#bdbebe] mb-1.5">Seller / Business Age</label>
-                            <input type="number" class="w-full bg-[#111214] border border-[#393b3d] rounded-md px-3 py-2.5 focus:border-[#00b06f] focus:outline-none text-[15px] text-white" placeholder="e.g. 25" />
+        <div id="section-dashboard">
+            <header class="h-[70px] px-8 flex items-center justify-between border-b border-[#232527] sticky top-0 bg-[#111214]/95 backdrop-blur z-10">
+                <h1 class="text-[24px] font-bold text-white tracking-tight">Seller Dashboard</h1>
+            </header>
+            <div class="p-8 space-y-8">
+                <div class="w-full bg-[#232527] rounded-xl p-8 border border-[#393b3d]">
+                    <h2 class="text-xl font-bold mb-6">List a New Product</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="md:col-span-2">
+                            <label class="block text-[13px] font-semibold text-[#bdbebe] mb-1.5">Product Title</label>
+                            <input type="text" id="p-title" class="w-full bg-[#111214] border border-[#393b3d] rounded-md px-3 py-2.5 text-white outline-none focus:border-[#00b06f]" placeholder="e.g. Vintage Camera" />
                         </div>
                         <div>
-                            <label class="block text-[13px] font-semibold text-[#bdbebe] mb-1.5">Default Price Rate ($)</label>
-                            <input type="number" class="w-full bg-[#111214] border border-[#393b3d] rounded-md px-3 py-2.5 focus:border-[#00b06f] focus:outline-none text-[15px] text-white" placeholder="e.g. 50.00" />
+                            <label class="block text-[13px] font-semibold text-[#bdbebe] mb-1.5">Price ($)</label>
+                            <input type="number" id="p-price" class="w-full bg-[#111214] border border-[#393b3d] rounded-md px-3 py-2.5 text-white outline-none focus:border-[#00b06f]" placeholder="0.00" />
+                        </div>
+                        <div class="md:col-span-3">
+                            <label class="block text-[13px] font-semibold text-[#bdbebe] mb-1.5">Image URL</label>
+                            <input type="text" id="p-image" class="w-full bg-[#111214] border border-[#393b3d] rounded-md px-3 py-2.5 text-white outline-none focus:border-[#00b06f]" placeholder="https://..." />
                         </div>
                     </div>
+                    <button onclick="addProduct()" id="add-btn" class="mt-6 bg-[#00b06f] hover:bg-[#008f5a] text-white px-6 py-2.5 rounded-md font-bold transition-colors">Post Product</button>
+                </div>
 
-                    <div class="my-6 border-t border-[#393b3d]"></div>
-                    <h3 class="text-md font-bold text-white mb-4">Standard Package Specs</h3>
-
-                    <div class="grid grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-[13px] font-semibold text-[#bdbebe] mb-1.5">Average Size (L x W x H inches)</label>
-                            <input type="text" class="w-full bg-[#111214] border border-[#393b3d] rounded-md px-3 py-2.5 focus:border-[#00b06f] focus:outline-none text-[15px] text-white" placeholder="10 x 8 x 6" />
+                <div class="space-y-4">
+                    <h2 class="text-xl font-bold">Your Live Listings</h2>
+                    <div id="my-products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         </div>
-                        <div>
-                            <label class="block text-[13px] font-semibold text-[#bdbebe] mb-1.5">Average Weight (lbs)</label>
-                            <input type="number" class="w-full bg-[#111214] border border-[#393b3d] rounded-md px-3 py-2.5 focus:border-[#00b06f] focus:outline-none text-[15px] text-white" placeholder="e.g. 2.5" />
-                        </div>
-                    </div>
-
-                    <button class="w-full bg-[#00b06f] hover:bg-[#008f5a] text-white rounded-md px-4 py-3 font-bold text-[16px] mt-8 transition-colors">
-                        Confirm & Save Profile
-                    </button>
                 </div>
             </div>
         </div>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-client.js"></script>
+
+    <script>
+        // --- 1. Navigation Logic ---
+        function showSection(name) {
+            document.getElementById('section-setup').classList.toggle('hidden', name !== 'setup');
+            document.getElementById('section-dashboard').classList.toggle('hidden', name !== 'dashboard');
+        }
+
+        // --- 2. Save Seller Settings ---
+        async function saveProfile() {
+            const { data: { user } } = await supabaseApp.auth.getUser();
+            const updates = {
+                id: user.id,
+                age: document.getElementById('setup-age').value,
+                price_rate: document.getElementById('setup-rate').value,
+                avg_size: document.getElementById('setup-size').value,
+                avg_weight: document.getElementById('setup-weight').value,
+                updated_at: new Date()
+            };
+
+            const { error } = await supabaseApp.from('profiles').upsert(updates);
+            if (error) alert(error.message);
+            else alert("Profile Updated!");
+        }
+
+        // --- 3. Add Real Product to Table ---
+        async function addProduct() {
+            const btn = document.getElementById('add-btn');
+            const { data: { user } } = await supabaseApp.auth.getUser();
+            
+            const product = {
+                title: document.getElementById('p-title').value,
+                price: document.getElementById('p-price').value,
+                image_url: document.getElementById('p-image').value,
+                seller_id: user.id
+            };
+
+            btn.innerText = "Posting...";
+            const { error } = await supabaseApp.from('products').insert([product]);
+            
+            if (error) {
+                alert(error.message);
+            } else {
+                alert("Product listed successfully!");
+                location.reload();
+            }
+        }
+
+        // --- 4. Load ONLY this Seller's Products ---
+        async function loadMyProducts() {
+            const { data: { user } } = await supabaseApp.auth.getUser();
+            const { data: products, error } = await supabaseApp
+                .from('products')
+                .select('*')
+                .eq('seller_id', user.id);
+
+            const grid = document.getElementById('my-products');
+            grid.innerHTML = products.length ? '' : '<p class="text-[#757678]">No listings yet.</p>';
+            
+            products.forEach(p => {
+                grid.innerHTML += `
+                    <div class="bg-[#232527] border border-[#393b3d] p-3 rounded-lg">
+                        <img src="${p.image_url}" class="w-full aspect-video object-cover rounded-md mb-2">
+                        <h3 class="font-bold text-sm">${p.title}</h3>
+                        <p class="text-[#00b06f] font-bold">$${p.price}</p>
+                    </div>
+                `;
+            });
+        }
+
+        window.onload = loadMyProducts;
+    </script>
 </body>
 </html>
