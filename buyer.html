@@ -167,6 +167,36 @@
         }
 
         window.onload = () => loadProducts();
-    </script>
+    (async function protectPage() {
+    // 1. Check if session even exists
+    const { data: { session }, error: sessionError } = await supabaseApp.auth.getSession();
+    
+    if (!session || sessionError) {
+        window.location.replace('index.html');
+        return;
+    }
+
+    // 2. Get Profile
+    const { data: profile, error: profileError } = await supabaseApp
+        .from('profiles')
+        .select('role')
+        .eq('id', session.user.id)
+        .single();
+
+    if (profileError || !profile) {
+        console.warn("Profile not found yet, staying put...");
+        return;
+    }
+
+    // 3. Strict Routing
+    const role = profile.role.toLowerCase();
+    if (role === 'seller') {
+        window.location.replace('seller.html');
+    } else if (role === 'driver') {
+        window.location.replace('dispatch.html');
+    }
+    // If they are 'customer', we do nothing and let the page load.
+})();
+
 </body>
 </html>
