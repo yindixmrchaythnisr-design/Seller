@@ -1,42 +1,3 @@
-<button onclick="handleLogout()" class="text-xs text-[#f87171] hover:underline mt-auto mb-4">
-    Logout
-</button>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-client.js"></script>
-<script>
-    (async function protectPage() {
-        // 1. Get current session
-        const { data: { session } } = await supabaseApp.auth.getSession();
-        
-        if (!session) {
-            // Not logged in? Send to login
-            window.location.href = 'index.html';
-            return;
-        }
-
-        // 2. Check Role
-        const { data: profile } = await supabaseApp
-            .from('profiles')
-            .select('role')
-            .eq('id', session.user.id)
-            .single();
-
-        const currentPage = window.location.pathname;
-        const role = profile?.role;
-
-        // 3. Logic for Blocking
-        // Check if the role matches the specific file they are trying to view
-        if (role === 'seller' && !currentPage.includes('seller.html')) {
-            window.location.href = 'seller.html';
-        } else if (role === 'driver' && !currentPage.includes('dispatch.html')) {
-            window.location.href = 'dispatch.html';
-        } else if (role === 'customer' && !currentPage.includes('buyer.html')) {
-            window.location.href = 'buyer.html';
-        }
-    })();
-</script>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -70,6 +31,13 @@
                 </div>
                 <span class="text-[11px] font-semibold text-[#bdbebe]">Settings</span>
             </a>
+            
+            <button onclick="handleLogout()" class="mt-auto mb-4 flex flex-col items-center gap-1 group">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center text-[#f87171] hover:bg-red-500/10 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                </div>
+                <span class="text-[11px] font-semibold text-[#f87171]">Logout</span>
+            </button>
         </nav>
     </aside>
 
@@ -91,16 +59,6 @@
                                 <input type="number" id="setup-rate" class="w-full bg-[#111214] border border-[#393b3d] rounded-md px-3 py-2.5 focus:border-[#00b06f] text-white outline-none" />
                             </div>
                         </div>
-                        <div class="grid grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-[13px] font-semibold text-[#bdbebe] mb-1.5">Avg Size (inches)</label>
-                                <input type="text" id="setup-size" class="w-full bg-[#111214] border border-[#393b3d] rounded-md px-3 py-2.5 focus:border-[#00b06f] text-white outline-none" />
-                            </div>
-                            <div>
-                                <label class="block text-[13px] font-semibold text-[#bdbebe] mb-1.5">Avg Weight (lbs)</label>
-                                <input type="number" id="setup-weight" class="w-full bg-[#111214] border border-[#393b3d] rounded-md px-3 py-2.5 focus:border-[#00b06f] text-white outline-none" />
-                            </div>
-                        </div>
                         <button onclick="saveProfile()" class="w-full bg-[#00b06f] hover:bg-[#008f5a] text-white rounded-md py-3 font-bold mt-4 transition-colors">Save Settings</button>
                     </div>
                 </div>
@@ -117,16 +75,23 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="md:col-span-2">
                             <label class="block text-[13px] font-semibold text-[#bdbebe] mb-1.5">Product Title</label>
-                            <input id="p-image-file" type="file" accept="image/*" class="hidden" />
-
+                            <input type="text" id="p-title" class="w-full bg-[#111214] border border-[#393b3d] rounded-md px-3 py-2.5 text-white outline-none focus:border-[#00b06f]" placeholder="Item name" />
                         </div>
                         <div>
                             <label class="block text-[13px] font-semibold text-[#bdbebe] mb-1.5">Price ($)</label>
                             <input type="number" id="p-price" class="w-full bg-[#111214] border border-[#393b3d] rounded-md px-3 py-2.5 text-white outline-none focus:border-[#00b06f]" placeholder="0.00" />
                         </div>
+                        
                         <div class="md:col-span-3">
-                            <label class="block text-[13px] font-semibold text-[#bdbebe] mb-1.5">Image URL</label>
-                            <input type="text" id="p-image" class="w-full bg-[#111214] border border-[#393b3d] rounded-md px-3 py-2.5 text-white outline-none focus:border-[#00b06f]" placeholder="https://..." />
+                            <label class="block text-[13px] font-semibold text-[#bdbebe] mb-1.5">Product Photo</label>
+                            <label for="p-image-file" class="flex flex-col items-center justify-center w-full h-32 border-2 border-[#393b3d] border-dashed rounded-lg cursor-pointer bg-[#111214] hover:bg-[#1a1b1e] transition-colors">
+                                <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                    <svg class="w-8 h-8 mb-3 text-[#757678]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                                    <p class="text-xs text-[#bdbebe]"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                                    <p id="file-name-display" class="text-[11px] text-[#00b06f] mt-1"></p>
+                                </div>
+                                <input id="p-image-file" type="file" accept="image/*" class="hidden" onchange="updateFileName(this)" />
+                            </label>
                         </div>
                     </div>
                     <button onclick="addProduct()" id="add-btn" class="mt-6 bg-[#00b06f] hover:bg-[#008f5a] text-white px-6 py-2.5 rounded-md font-bold transition-colors">Post Product</button>
@@ -134,8 +99,7 @@
 
                 <div class="space-y-4">
                     <h2 class="text-xl font-bold">Your Live Listings</h2>
-                    <div id="my-products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        </div>
+                    <div id="my-products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
                 </div>
             </div>
         </div>
@@ -145,71 +109,94 @@
     <script src="supabase-client.js"></script>
 
     <script>
-        // --- 1. Navigation Logic ---
+        // --- Protection Script ---
+        (async function protectPage() {
+            const { data: { session } } = await supabaseApp.auth.getSession();
+            if (!session) { window.location.href = 'index.html'; return; }
+            const { data: profile } = await supabaseApp.from('profiles').select('role').eq('id', session.user.id).single();
+            if (profile?.role !== 'seller') { window.location.href = 'buyer.html'; }
+        })();
+
+        async function handleLogout() {
+            await supabaseApp.auth.signOut();
+            window.location.href = 'index.html';
+        }
+
         function showSection(name) {
             document.getElementById('section-setup').classList.toggle('hidden', name !== 'setup');
             document.getElementById('section-dashboard').classList.toggle('hidden', name !== 'dashboard');
         }
 
-        // --- 2. Save Seller Settings ---
-        async function saveProfile() {
-            const { data: { user } } = await supabaseApp.auth.getUser();
-            const updates = {
-                id: user.id,
-                age: document.getElementById('setup-age').value,
-                price_rate: document.getElementById('setup-rate').value,
-                avg_size: document.getElementById('setup-size').value,
-                avg_weight: document.getElementById('setup-weight').value,
-                updated_at: new Date()
-            };
-
-            const { error } = await supabaseApp.from('profiles').upsert(updates);
-            if (error) alert(error.message);
-            else alert("Profile Updated!");
+        function updateFileName(input) {
+            const display = document.getElementById('file-name-display');
+            display.innerText = input.files[0] ? "Selected: " + input.files[0].name : "";
         }
 
-        // --- 3. Add Real Product to Table ---
         async function addProduct() {
             const btn = document.getElementById('add-btn');
-            const { data: { user } } = await supabaseApp.auth.getUser();
+            const fileInput = document.getElementById('p-image-file');
+            const title = document.getElementById('p-title').value;
+            const price = document.getElementById('p-price').value;
             
-            const product = {
-                title: document.getElementById('p-title').value,
-                price: document.getElementById('p-price').value,
-                image_url: document.getElementById('p-image').value,
-                seller_id: user.id
-            };
+            if (!fileInput.files[0] || !title || !price) {
+                alert("Please fill in all fields and select an image.");
+                return;
+            }
 
-            btn.innerText = "Posting...";
-            const { error } = await supabaseApp.from('products').insert([product]);
-            
-            if (error) {
-                alert(error.message);
-            } else {
-                alert("Product listed successfully!");
+            btn.innerText = "Uploading...";
+            btn.disabled = true;
+
+            try {
+                const { data: { user } } = await supabaseApp.auth.getUser();
+                const file = fileInput.files[0];
+                const fileExt = file.name.split('.').pop();
+                const fileName = `${user.id}-${Date.now()}.${fileExt}`;
+
+                // 1. Upload to Storage (Make sure bucket 'product-images' is public)
+                const { error: uploadError } = await supabaseApp.storage
+                    .from('product-images')
+                    .upload(fileName, file);
+
+                if (uploadError) throw uploadError;
+
+                // 2. Get Public URL
+                const { data: { publicUrl } } = supabaseApp.storage
+                    .from('product-images')
+                    .getPublicUrl(fileName);
+
+                // 3. Insert into Table
+                const { error: dbError } = await supabaseApp.from('products').insert([
+                    {
+                        title: title,
+                        price: parseFloat(price),
+                        image_url: publicUrl,
+                        seller_id: user.id
+                    }
+                ]);
+
+                if (dbError) throw dbError;
+
+                alert("Product listed!");
                 location.reload();
+            } catch (err) {
+                alert(err.message);
+                btn.innerText = "Post Product";
+                btn.disabled = false;
             }
         }
 
-        // --- 4. Load ONLY this Seller's Products ---
         async function loadMyProducts() {
             const { data: { user } } = await supabaseApp.auth.getUser();
-            const { data: products, error } = await supabaseApp
-                .from('products')
-                .select('*')
-                .eq('seller_id', user.id);
-
+            const { data: products } = await supabaseApp.from('products').select('*').eq('seller_id', user.id);
             const grid = document.getElementById('my-products');
-            grid.innerHTML = products.length ? '' : '<p class="text-[#757678]">No listings yet.</p>';
-            
-            products.forEach(p => {
+            grid.innerHTML = products?.length ? '' : '<p class="text-[#757678]">No listings yet.</p>';
+            products?.forEach(p => {
                 grid.innerHTML += `
                     <div class="bg-[#232527] border border-[#393b3d] p-3 rounded-lg">
                         <img src="${p.image_url}" class="w-full aspect-video object-cover rounded-md mb-2">
                         <h3 class="font-bold text-sm">${p.title}</h3>
                         <p class="text-[#00b06f] font-bold">$${p.price}</p>
-                    </div>
-                `;
+                    </div>`;
             });
         }
 
