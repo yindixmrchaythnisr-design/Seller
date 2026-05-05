@@ -8,8 +8,6 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; }
-        
-        /* Hide scrollbar for clean horizontal scrolling if needed, though we use grid here */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #393b3d; border-radius: 4px; }
@@ -33,11 +31,12 @@
                 <span class="text-[11px] font-semibold text-white">Home</span>
             </a>
             
-            <a href="#" class="flex flex-col items-center gap-1 group">
-                <div class="w-10 h-10 rounded-full flex items-center justify-center text-[#bdbebe] group-hover:bg-[#393b3d] group-hover:text-white transition-colors">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+            <a href="#" onclick="openMessages()" class="flex flex-col items-center gap-1 group">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center text-[#bdbebe] group-hover:bg-[#393b3d] group-hover:text-white transition-colors relative">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                    <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-[#00b06f] rounded-full border-2 border-[#232527]"></span>
                 </div>
-                <span class="text-[11px] font-semibold text-[#bdbebe] group-hover:text-white">Trending</span>
+                <span class="text-[11px] font-semibold text-[#bdbebe] group-hover:text-white">Messages</span>
             </a>
 
             <a href="#" class="flex flex-col items-center gap-1 group">
@@ -60,147 +59,150 @@
             <h1 class="text-[24px] font-bold text-white tracking-tight">Home</h1>
             
             <div class="max-w-2xl w-full mx-8">
-                <div class="relative flex items-center w-full h-10 rounded-full focus-within:shadow-lg bg-[#232527] overflow-hidden border border-[#393b3d] focus-within:border-[#00b06f] transition-colors">
+                <form id="search-form" onsubmit="handleSearch(event)" class="relative flex items-center w-full h-10 rounded-full focus-within:shadow-lg bg-[#232527] overflow-hidden border border-[#393b3d] focus-within:border-[#00b06f] transition-colors">
                     <div class="grid place-items-center h-full w-12 text-[#757678]">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                     </div>
-                    <input class="peer h-full w-full outline-none text-sm text-white bg-transparent pr-2 placeholder-[#757678]" type="text" id="search" placeholder="Search for products, sellers, or categories..." />
-                </div>
+                    <input class="peer h-full w-full outline-none text-sm text-white bg-transparent pr-2 placeholder-[#757678]" type="text" id="search-input" placeholder="Search products..." />
+                </form>
             </div>
 
             <div class="flex items-center gap-4">
-                <button class="text-[#bdbebe] hover:text-white relative">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                    <span class="absolute top-0 right-0 w-2.5 h-2.5 bg-[#f87171] rounded-full border-2 border-[#111214]"></span>
+                <button onclick="openCart()" class="text-[#bdbebe] hover:text-white relative p-2 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    <span id="cart-count" class="absolute top-0 right-0 w-4 h-4 text-[10px] font-bold flex items-center justify-center bg-[#00b06f] text-white rounded-full border-2 border-[#111214]">0</span>
                 </button>
+
                 <button class="bg-[#232527] border border-[#393b3d] hover:bg-[#393b3d] text-white p-2 rounded-full transition-colors">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
                 </button>
             </div>
         </header>
 
         <div class="flex-1 overflow-y-auto p-8 space-y-10">
-            
             <section>
-                <div class="mb-5">
-                    <h2 class="text-[20px] font-bold text-white">Standout Products</h2>
-                    <p class="text-[14px] text-[#bdbebe]">Curated items shaping what's next in the marketplace</p>
+                <div class="mb-5 flex justify-between items-end">
+                    <div>
+                        <h2 class="text-[20px] font-bold text-white">Marketplace Products</h2>
+                        <p class="text-[14px] text-[#bdbebe]">Real items from verified sellers</p>
+                    </div>
                 </div>
                 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                    <div class="group cursor-pointer flex flex-col">
-                        <div class="w-full aspect-[4/3] rounded-xl overflow-hidden bg-[#232527] mb-3 relative">
-                            <img src="https://images.unsplash.com/photo-1593640408182-31c70c8268f5?w=500&q=80" alt="Product" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                        </div>
-                        <h3 class="font-bold text-[15px] leading-tight mb-1 truncate text-white group-hover:underline">Mechanical Keyboard Pro V2</h3>
-                        <p class="text-[13px] text-[#bdbebe] truncate mb-1">TechGear Official</p>
-                        <div class="flex items-center gap-2">
-                            <span class="text-[#00b06f] font-bold text-[14px]">$129.99</span>
-                            <span class="text-[#757678] text-[12px] flex items-center"><svg class="w-3 h-3 mr-0.5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>98% Rating</span>
-                        </div>
-                    </div>
-
-                    <div class="group cursor-pointer flex flex-col">
-                        <div class="w-full aspect-[4/3] rounded-xl overflow-hidden bg-[#232527] mb-3 relative">
-                            <img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=500&q=80" alt="Product" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                        </div>
-                        <h3 class="font-bold text-[15px] leading-tight mb-1 truncate text-white group-hover:underline">Noise-Canceling Studio Headset</h3>
-                        <p class="text-[13px] text-[#bdbebe] truncate mb-1">AudioPhile</p>
-                        <div class="flex items-center gap-2">
-                            <span class="text-[#00b06f] font-bold text-[14px]">$199.50</span>
-                            <span class="text-[#757678] text-[12px] flex items-center"><svg class="w-3 h-3 mr-0.5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>95% Rating</span>
-                        </div>
-                    </div>
-
-                    <div class="group cursor-pointer flex flex-col">
-                        <div class="w-full aspect-[4/3] rounded-xl overflow-hidden bg-[#232527] mb-3 relative">
-                            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80" alt="Product" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                        </div>
-                        <h3 class="font-bold text-[15px] leading-tight mb-1 truncate text-white group-hover:underline">Studio Monitor Headphones</h3>
-                        <p class="text-[13px] text-[#bdbebe] truncate mb-1">Soundscapes</p>
-                        <div class="flex items-center gap-2">
-                            <span class="text-[#00b06f] font-bold text-[14px]">$145.00</span>
-                            <span class="text-[#757678] text-[12px] flex items-center"><svg class="w-3 h-3 mr-0.5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>88% Rating</span>
-                        </div>
-                    </div>
-
-                    <div class="group cursor-pointer flex flex-col">
-                        <div class="w-full aspect-[4/3] rounded-xl overflow-hidden bg-[#232527] mb-3 relative">
-                            <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=500&q=80" alt="Product" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                        </div>
-                        <h3 class="font-bold text-[15px] leading-tight mb-1 truncate text-white group-hover:underline">Vintage Polaroid Camera</h3>
-                        <p class="text-[13px] text-[#bdbebe] truncate mb-1">RetroLens</p>
-                        <div class="flex items-center gap-2">
-                            <span class="text-[#00b06f] font-bold text-[14px]">$89.99</span>
-                            <span class="text-[#757678] text-[12px] flex items-center"><svg class="w-3 h-3 mr-0.5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>99% Rating</span>
-                        </div>
-                    </div>
+                <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                    <p class="text-[#bdbebe] col-span-full">Loading products from Supabase...</p>
                 </div>
             </section>
-
-            <section>
-                <div class="mb-5">
-                    <h2 class="text-[20px] font-bold text-white">Recommended For You</h2>
-                </div>
-                
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-5">
-                    <div class="group cursor-pointer flex flex-col">
-                        <div class="w-full aspect-[16/9] rounded-lg overflow-hidden bg-[#232527] mb-2">
-                             <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=80" alt="Shoe" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                        </div>
-                        <h3 class="font-bold text-[14px] leading-tight mb-0.5 truncate text-white group-hover:underline">[🔥] Urban Running Shoes</h3>
-                        <div class="flex items-center gap-2">
-                            <span class="text-[#bdbebe] text-[12px] flex items-center"><span class="text-white font-bold mr-1">👍 97%</span> Rating</span>
-                        </div>
-                    </div>
-
-                    <div class="group cursor-pointer flex flex-col">
-                        <div class="w-full aspect-[16/9] rounded-lg overflow-hidden bg-[#232527] mb-2">
-                             <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?w=500&q=80" alt="Headphones" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                        </div>
-                        <h3 class="font-bold text-[14px] leading-tight mb-0.5 truncate text-white group-hover:underline">Wireless Earbuds MAX 🏆</h3>
-                        <div class="flex items-center gap-2">
-                            <span class="text-[#bdbebe] text-[12px] flex items-center"><span class="text-white font-bold mr-1">👍 86%</span> Rating</span>
-                        </div>
-                    </div>
-
-                    <div class="group cursor-pointer flex flex-col">
-                        <div class="w-full aspect-[16/9] rounded-lg overflow-hidden bg-[#232527] mb-2">
-                             <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80" alt="Watch" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                        </div>
-                        <h3 class="font-bold text-[14px] leading-tight mb-0.5 truncate text-white group-hover:underline">Minimalist Smart Watch</h3>
-                        <div class="flex items-center gap-2">
-                            <span class="text-[#bdbebe] text-[12px] flex items-center"><span class="text-white font-bold mr-1">👍 92%</span> Rating</span>
-                        </div>
-                    </div>
-
-                    <div class="group cursor-pointer flex flex-col">
-                        <div class="w-full aspect-[16/9] rounded-lg overflow-hidden bg-[#232527] mb-2">
-                             <img src="https://images.unsplash.com/photo-1504274066651-8d31a536b11a?w=500&q=80" alt="Gadget" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                        </div>
-                        <h3 class="font-bold text-[14px] leading-tight mb-0.5 truncate text-white group-hover:underline">Pro Controller Grip 🐞</h3>
-                        <div class="flex items-center gap-2">
-                            <span class="text-[#bdbebe] text-[12px] flex items-center"><span class="text-white font-bold mr-1">👍 82%</span> Rating</span>
-                        </div>
-                    </div>
-                    
-                    <div class="group cursor-pointer flex flex-col hidden xl:flex">
-                        <div class="w-full aspect-[16/9] rounded-lg overflow-hidden bg-[#232527] mb-2">
-                             <img src="https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=500&q=80" alt="Laptop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                        </div>
-                        <h3 class="font-bold text-[14px] leading-tight mb-0.5 truncate text-white group-hover:underline">Slim Gaming Laptop</h3>
-                        <div class="flex items-center gap-2">
-                            <span class="text-[#bdbebe] text-[12px] flex items-center"><span class="text-white font-bold mr-1">👍 95%</span> Rating</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <div class="h-10"></div>
         </div>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-client.js"></script>
+
+    <script>
+        // --- 1. DYNAMIC PRODUCT FETCHING ---
+        async function loadProducts(searchQuery = '') {
+            const grid = document.getElementById('products-grid');
+            
+            try {
+                // Fetch from your actual Supabase 'products' table
+                let query = supabaseApp.from('products').select(`
+                    id, 
+                    title, 
+                    price, 
+                    image_url, 
+                    seller_id,
+                    profiles!seller_id(email) 
+                `);
+
+                // If user is searching, filter the titles
+                if (searchQuery) {
+                    query = query.ilike('title', `%${searchQuery}%`);
+                }
+
+                const { data: products, error } = await query;
+
+                if (error) throw error;
+
+                // Clear the loading text
+                grid.innerHTML = '';
+
+                if (products.length === 0) {
+                    grid.innerHTML = `<p class="text-[#bdbebe] col-span-full">No products found.</p>`;
+                    return;
+                }
+
+                // Loop through the database data and build the HTML cards
+                products.forEach(product => {
+                    // Fallback image if seller didn't upload one
+                    const imgUrl = product.image_url || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80';
+                    const sellerEmail = product.profiles ? product.profiles.email : 'Unknown Seller';
+
+                    const cardHTML = `
+                        <div class="group flex flex-col bg-[#232527] rounded-xl overflow-hidden border border-[#393b3d] hover:border-[#00b06f] transition-colors pb-4">
+                            <div class="w-full aspect-[4/3] bg-[#111214] mb-3 relative overflow-hidden cursor-pointer" onclick="viewProduct('${product.id}')">
+                                <img src="${imgUrl}" alt="${product.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            </div>
+                            <div class="px-4 flex-1 flex flex-col">
+                                <h3 class="font-bold text-[15px] leading-tight mb-1 text-white cursor-pointer hover:underline" onclick="viewProduct('${product.id}')">${product.title}</h3>
+                                <p class="text-[12px] text-[#757678] truncate mb-2">Sold by: ${sellerEmail}</p>
+                                
+                                <div class="flex items-center justify-between mt-auto pt-2">
+                                    <span class="text-[#00b06f] font-bold text-[16px]">$${product.price.toFixed(2)}</span>
+                                    <button onclick="addToCart('${product.id}')" class="bg-[#393b3d] hover:bg-[#00b06f] text-white text-xs font-bold px-3 py-1.5 rounded-md transition-colors">
+                                        + Add
+                                    </button>
+                                </div>
+                                <button onclick="startChat('${product.seller_id}')" class="w-full mt-3 bg-transparent border border-[#393b3d] hover:bg-[#393b3d] text-[#bdbebe] hover:text-white text-xs font-bold px-3 py-2 rounded-md transition-colors flex items-center justify-center gap-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                                    Message Seller
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    grid.insertAdjacentHTML('beforeend', cardHTML);
+                });
+
+            } catch (err) {
+                console.error("Error loading products:", err);
+                grid.innerHTML = `<p class="text-[#f87171] col-span-full">Error loading products. Make sure your 'products' table exists in Supabase.</p>`;
+            }
+        }
+
+        // --- 2. SEARCH FUNCTIONALITY ---
+        function handleSearch(e) {
+            e.preventDefault(); // Prevent page reload
+            const query = document.getElementById('search-input').value;
+            loadProducts(query);
+        }
+
+        // --- 3. CART FUNCTIONALITY (Local State for now) ---
+        let cartItems = 0;
+        function addToCart(productId) {
+            // In a real app, you'd save this to a 'cart' table in Supabase or localStorage
+            cartItems++;
+            document.getElementById('cart-count').innerText = cartItems;
+            // Optional: Show a nice toast notification here!
+        }
+        function openCart() {
+            alert(`You have ${cartItems} items in your cart. We will build the checkout page next!`);
+        }
+
+        // --- 4. DIRECT MESSAGING (DM) ROUTING ---
+        function startChat(sellerId) {
+            // This would navigate to a dedicated messages page or open a modal
+            alert(`Opening chat with Seller ID: ${sellerId}\n\nTo make this work, we need a 'messages' table in Supabase!`);
+        }
+        function openMessages() {
+            alert("Opening your inbox!");
+        }
+        function viewProduct(productId) {
+            alert("Navigate to product detail page for ID: " + productId);
+        }
+
+        // Run this when the page loads!
+        window.addEventListener('DOMContentLoaded', () => {
+            loadProducts();
+        });
+    </script>
 </body>
 </html>
