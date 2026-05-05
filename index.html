@@ -150,3 +150,70 @@
     </script>
 </body>
 </html>
+async function handleAuth() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const selectedRole = document.getElementById('role').value;
+    const errorMsg = document.getElementById('error-msg');
+    const errorText = document.getElementById('error-text');
+    const authBtn = document.getElementById('auth-btn');
+    
+    errorMsg.classList.add('hidden');
+    authBtn.innerText = "Verifying...";
+    authBtn.disabled = true;
+
+    try {
+        if (isLogin) {
+            const { data, error } = await supabaseApp.auth.signInWithPassword({ email, password });
+            if (error) throw error;
+
+            // --- THE FIX: RETRY LOGIC ---
+            let roleToRoute = null;
+            
+            // Try up to 3 times to get the profile in case of lag
+            for (let i = 0; i < 3; i++) {
+                const { data: profile } = await supabaseApp
+                    .from('profiles')
+                    .select('role')
+                    .eq('id', data.user.id)
+                    .maybeSingle();
+                
+                if (profile?.role) {
+                    roleToRoute = profile.role;
+                    break;
+                }
+                // Wait 500ms before retrying
+                await new Promise(res => setTimeout(res, 500));
+            }
+
+            // Fallback to Metadata if Database is still empty
+            roleToRoute = roleToRoute || data.user.user_metadata?.role || 'customer';
+            
+            routeUser(roleToRoute);
+
+        } else {
+            // --- SIGN UP ---
+            const { data, error } = await supabaseApp.auth.signUp({
+                email,
+                password,
+                options: { data: { role: selectedRole } }
+            });
+
+            if (error) throw error;
+            if (!data.user) throw new Error("Check your email!");
+
+            // Use UPSERT to prevent primary key errors
+            await supabaseApp.from('profiles').upsert([
+                { id: data.user.id, email: email, role: selectedRole }
+            ]);
+
+            routeUser(selectedRole);
+        }
+    } catch (err) {
+        errorText.innerText = err.message;
+        errorMsg.classList.remove('hidden');
+        authBtn.innerText = isLogin ? "Log In" : "Sign Up";
+        authBtn.disabled = false;
+    }
+}
+
