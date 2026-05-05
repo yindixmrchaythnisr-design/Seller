@@ -22,7 +22,6 @@
     </header>
 
     <main class="flex-1 flex flex-col items-center pt-16 px-4">
-        
         <div class="w-full max-w-[400px] bg-[#232527] rounded-lg p-8 shadow-xl">
             <h2 class="text-2xl font-bold mb-6 text-center text-white" id="form-title">Login to Marketplace</h2>
             
@@ -74,14 +73,11 @@
 
         function toggleMode() {
             isLogin = !isLogin;
-            
             const title = isLogin ? "Login to Marketplace" : "Sign Up for Marketplace";
             document.getElementById('form-title').innerText = title;
             document.getElementById('auth-btn').innerText = isLogin ? "Log In" : "Sign Up";
             document.getElementById('toggle-text').innerText = isLogin ? "Don't have an account?" : "Already have an account?";
             document.getElementById('toggle-btn').innerText = isLogin ? "Sign Up" : "Log In";
-            
-            // Show role selection only during Sign Up
             document.getElementById('role-container').style.display = isLogin ? "none" : "block";
             document.getElementById('error-msg').classList.add('hidden');
         }
@@ -96,73 +92,60 @@
             
             errorMsg.classList.add('hidden');
             authBtn.innerText = "Processing...";
-            authBtn.classList.add('opacity-70', 'cursor-not-allowed');
             authBtn.disabled = true;
 
             try {
-                let result;
                 if (isLogin) {
-                    // --- LOGIN LOGIC ---
-                    result = await supabaseApp.auth.signInWithPassword({ email, password });
-                    if (result.error) throw result.error;
+                    // --- LOGIN ---
+                    const { data, error } = await supabaseApp.auth.signInWithPassword({ email, password });
+                    if (error) throw error;
 
-                    // Fetch the profile to determine the role for redirection
-                    const { data: profile, error: profileError } = await supabaseApp
+                    // 1. Check Database Profile
+                    const { data: profile } = await supabaseApp
                         .from('profiles')
                         .select('role')
-                        .eq('id', result.data.user.id)
+                        .eq('id', data.user.id)
                         .maybeSingle();
 
-                    if (profileError) throw profileError;
-                    
-                    // Route based on found role or default to customer
-                    const roleToRoute = profile?.role || 'customer';
+                    // 2. Use Metadata as backup if Database is slow
+                    const roleToRoute = profile?.role || data.user.user_metadata?.role || 'customer';
                     routeUser(roleToRoute);
 
                 } else {
-                    // --- SIGN UP LOGIC ---
-                    result = await supabaseApp.auth.signUp({
+                    // --- SIGN UP ---
+                    const { data, error } = await supabaseApp.auth.signUp({
                         email,
                         password,
                         options: { 
-                            data: { role: selectedRole } 
+                            data: { role: selectedRole } // Store role in metadata for instant access
                         }
                     });
 
-                    if (result.error) throw result.error;
-                    if (!result.data.user) throw new Error("Check your email for confirmation.");
+                    if (error) throw error;
+                    if (!data.user) throw new Error("Please check your email for confirmation.");
 
-                    // Insert the user profile manually to ensure data integrity
-                    const { error: profileError } = await supabaseApp.from('profiles').insert([
-                        { id: result.data.user.id, email: email, role: selectedRole }
+                    // Manually ensure the profile row exists
+                    await supabaseApp.from('profiles').upsert([
+                        { id: data.user.id, email: email, role: selectedRole }
                     ]);
 
-                    if (profileError) {
-                        console.warn("Profile insertion failed, checking if trigger handled it...");
-                    }
-
-                    // On successful signup, redirect to their role-specific page
                     routeUser(selectedRole);
                 }
             } catch (err) {
                 errorText.innerText = err.message;
                 errorMsg.classList.remove('hidden');
                 authBtn.innerText = isLogin ? "Log In" : "Sign Up";
-                authBtn.classList.remove('opacity-70', 'cursor-not-allowed');
                 authBtn.disabled = false;
             }
         }
 
         function routeUser(role) {
-            console.log("Routing to:", role);
             const routes = {
                 'customer': 'buyer.html',
                 'seller': 'seller.html',
                 'driver': 'dispatch.html'
             };
-            
-            const destination = routes[role] || 'buyer.html';
-            window.location.href = destination;
+            window.location.href = routes[role] || 'buyer.html';
         }
     </script>
 </body>
