@@ -1,3 +1,38 @@
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script>
+    (async function protectPage() {
+        // 1. Get current session
+        const { data: { session } } = await supabaseApp.auth.getSession();
+        
+        if (!session) {
+            // Not logged in? Send to login
+            window.location.href = 'index.html';
+            return;
+        }
+
+        // 2. Check Role
+        const { data: profile } = await supabaseApp
+            .from('profiles')
+            .select('role')
+            .eq('id', session.user.id)
+            .single();
+
+        const currentPage = window.location.pathname;
+        const role = profile?.role;
+
+        // 3. Logic for Blocking
+        // Check if the role matches the specific file they are trying to view
+        if (role === 'seller' && !currentPage.includes('seller.html')) {
+            window.location.href = 'seller.html';
+        } else if (role === 'driver' && !currentPage.includes('dispatch.html')) {
+            window.location.href = 'dispatch.html';
+        } else if (role === 'customer' && !currentPage.includes('buyer.html')) {
+            window.location.href = 'buyer.html';
+        }
+    })();
+</script>
+
 <<!DOCTYPE html>
 <html lang="en">
 <head>
