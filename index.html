@@ -1,87 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | Marketplace</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-    </style>
-</head>
-<body class="bg-[#111214] text-white min-h-screen flex flex-col">
-
-    <header class="bg-[#232527] h-[50px] flex items-center px-6 sticky top-0 z-50">
-        <div class="flex items-center gap-2">
-            <svg class="w-8 h-8 text-[#00b06f] transform rotate-[50deg]" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H24V24H0V0ZM8 8H16V16H8V8Z" />
-            </svg>
-            <h1 class="text-[20px] font-extrabold tracking-tight text-white ml-2">Marketplace</h1>
-        </div>
-    </header>
-
-    <main class="flex-1 flex flex-col items-center pt-16 px-4">
-        
-        <div class="w-full max-w-[400px] bg-[#232527] rounded-lg p-8 shadow-xl">
-            <h2 class="text-2xl font-bold mb-6 text-center text-white" id="form-title">Login to Marketplace</h2>
-            
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-[13px] font-semibold text-[#bdbebe] mb-1.5">Email</label>
-                    <input type="email" id="email" class="w-full bg-[#111214] border border-[#bdbebe] rounded-md px-3 py-2.5 focus:border-white focus:ring-1 focus:ring-white focus:outline-none text-[15px] text-white transition-colors placeholder-[#757678]" placeholder="Email" />
-                </div>
-                
-                <div>
-                    <label class="block text-[13px] font-semibold text-[#bdbebe] mb-1.5">Password</label>
-                    <input type="password" id="password" class="w-full bg-[#111214] border border-[#bdbebe] rounded-md px-3 py-2.5 focus:border-white focus:ring-1 focus:ring-white focus:outline-none text-[15px] text-white transition-colors placeholder-[#757678]" placeholder="Password" />
-                </div>
-
-                <div id="role-container" class="hidden space-y-1.5">
-                    <label class="block text-[13px] font-semibold text-[#bdbebe]">Account Type</label>
-                    <select id="role" class="w-full bg-[#111214] border border-[#bdbebe] rounded-md px-3 py-2.5 focus:border-white focus:ring-1 focus:ring-white focus:outline-none text-[15px] text-white transition-colors">
-                        <option value="customer">Customer</option>
-                        <option value="seller">Seller</option>
-                        <option value="driver">Delivery Driver</option>
-                    </select>
-                </div>
-
-                <button id="auth-btn" onclick="handleAuth()" class="w-full bg-[#00b06f] hover:bg-[#008f5a] text-white rounded-md px-4 py-3 font-bold text-[16px] mt-4 transition-colors">
-                    Log In
-                </button>
-            </div>
-
-            <div class="my-6 border-t border-[#393b3d]"></div>
-
-            <div class="text-center space-y-4">
-                <p id="toggle-text" class="text-[14px] text-[#bdbebe]">Don't have an account?</p>
-                <button onclick="toggleMode()" id="toggle-btn" class="w-full bg-transparent hover:bg-[#393b3d] border border-[#bdbebe] text-white rounded-md px-4 py-2.5 font-bold text-[15px] transition-colors">
-                    Sign Up
-                </button>
-            </div>
-        </div>
-        
-        <div id="error-msg" class="hidden w-full max-w-[400px] mt-4 bg-[#f87171] bg-opacity-10 border border-[#f87171] text-[#fca5a5] px-4 py-3 rounded-md text-[14px] font-medium text-center">
-            <span id="error-text"></span>
-        </div>
-    </main>
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase-client.js"></script>
-
     <script>
         let isLogin = true;
 
         function toggleMode() {
             isLogin = !isLogin;
-            
-            const title = isLogin ? "Login to Marketplace" : "Sign Up for Marketplace";
-            document.getElementById('form-title').innerText = title;
+            document.getElementById('form-title').innerText = isLogin ? "Login to Marketplace" : "Sign Up for Marketplace";
             document.getElementById('auth-btn').innerText = isLogin ? "Log In" : "Sign Up";
             document.getElementById('toggle-text').innerText = isLogin ? "Don't have an account?" : "Already have an account?";
             document.getElementById('toggle-btn').innerText = isLogin ? "Sign Up" : "Log In";
-            
-            document.getElementById('role-container').style.display = isLogin ? "none" : "block";
+            document.getElementById('role-container').classList.toggle('hidden', isLogin);
             document.getElementById('error-msg').classList.add('hidden');
         }
 
@@ -94,37 +20,43 @@
             const authBtn = document.getElementById('auth-btn');
             
             errorMsg.classList.add('hidden');
-            authBtn.innerText = "Processing...";
-            authBtn.classList.add('opacity-70', 'cursor-not-allowed');
+            authBtn.innerText = "Authenticating...";
+            authBtn.disabled = true;
 
             try {
                 if (isLogin) {
+                    // 1. SIGN IN
                     const { data, error } = await supabaseApp.auth.signInWithPassword({ email, password });
                     if (error) throw error;
                     
+                    // 2. FETCH ROLE FROM DATABASE
                     const { data: profile, error: profileError } = await supabaseApp
-    .from('profiles')
-    .select('role')
-    .eq('id', data.user.id)
-    .maybeSingle(); // Changed to maybeSingle()
+                        .from('profiles')
+                        .select('role')
+                        .eq('id', data.user.id)
+                        .maybeSingle();
     
-if (profileError) throw profileError;
+                    if (profileError) throw profileError;
 
-// If the profile exists, use their role. If not, default to 'customer'
-const userRole = profile ? profile.role : 'customer'; 
-
-routeUser(userRole);
+                    // If profile doesn't exist yet (rare), check metadata
+                    const userRole = profile?.role || data.user.user_metadata?.role || 'customer'; 
+                    routeUser(userRole);
 
                 } else {
-                    const { data, error } = await supabaseApp.auth.signUp({ email, password });
+                    // 1. SIGN UP
+                    const { data, error } = await supabaseApp.auth.signUp({ 
+                        email, 
+                        password,
+                        options: { data: { role: role } } // Pass role to metadata for the trigger
+                    });
                     if (error) throw error;
+                    if (!data.user) throw new Error("Check your email for a confirmation link!");
 
-                    if (!data.user) throw new Error("Signup failed. Please try again.");
-
-                    const { error: profileError } = await supabaseApp.from('profiles').insert([
+                    // 2. CREATE PROFILE (Backup in case trigger fails)
+                    const { error: profileError } = await supabaseApp.from('profiles').upsert([
                         { id: data.user.id, email: email, role: role }
                     ]);
-                    if (profileError) throw profileError;
+                    if (profileError) console.warn("Profile already exists or trigger handled it.");
 
                     routeUser(role);
                 }
@@ -132,18 +64,18 @@ routeUser(userRole);
                 errorText.innerText = err.message;
                 errorMsg.classList.remove('hidden');
                 authBtn.innerText = isLogin ? "Log In" : "Sign Up";
-                authBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+                authBtn.disabled = false;
             }
         }
 
         function routeUser(role) {
-            const routes = {
-                'customer': 'buyer.html',
-                'seller': 'seller.html',
-                'driver': 'dispatch.html'
-            };
-            window.location.href = routes[role] || 'index.html';
+            console.log("Routing user with role:", role);
+            if (role === 'seller') {
+                window.location.href = 'seller.html';
+            } else if (role === 'driver') {
+                window.location.href = 'dispatch.html';
+            } else {
+                window.location.href = 'buyer.html';
+            }
         }
     </script>
-</body>
-</html>
