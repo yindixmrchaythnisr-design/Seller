@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Dashboard | Minimal Market</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }</style>
+</head>
+<body class="bg-white text-black min-h-screen selection:bg-black selection:text-white">
+    <nav class="border-b border-black p-6 flex justify-between items-center">
+        <h1 class="text-xl font-bold tracking-tight">SellerHQ.</h1>
+        <div class="text-sm border border-black px-4 py-2 hover:bg-black hover:text-white transition cursor-pointer">Logout</div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto p-6 grid grid-cols-1 md:grid-cols-2 gap-12 mt-8">
+        <section>
+            <h2 class="text-lg font-semibold mb-6 border-b border-black pb-2">Create Listing</h2>
+            <form class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Upload Image</label>
+                    <div class="border-2 border-dashed border-gray-300 p-8 text-center text-sm text-gray-500 hover:border-black transition cursor-pointer">
+                        Drag & drop or click to upload
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Description</label>
+                    <textarea class="w-full border border-black p-2 focus:outline-none focus:ring-1 focus:ring-black" rows="3" placeholder="What are you selling?"></textarea>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Price ($)</label>
+                        <input type="number" class="w-full border border-black p-2 focus:outline-none" placeholder="0.00">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Availability</label>
+                        <input type="text" class="w-full border border-black p-2 focus:outline-none" placeholder="e.g., 2-4 Days">
+                    </div>
+                </div>
+                <button class="w-full bg-black text-white p-3 font-medium hover:bg-gray-800 transition">Publish Listing</button>
+            </form>
+        </section>
+
+        <section>
+            <h2 class="text-lg font-semibold mb-6 border-b border-black pb-2">Active Bids & DMs</h2>
+            <div class="space-y-4">
+                <div class="border border-black p-4 flex justify-between items-center">
+                    <div>
+                        <p class="font-medium">Customer: @alex_dev</p>
+                        <p class="text-sm text-gray-600">Offered: $45.00</p>
+                    </div>
+                    <button class="bg-black text-white px-4 py-2 text-sm hover:bg-gray-800">Open DM</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-setup.js"></script>
+</body>
+</html>
