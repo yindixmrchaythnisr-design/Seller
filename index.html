@@ -154,6 +154,267 @@
             };
             window.location.href = routes[role] || 'index.html';
         }
+    </    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-client.js"></script>
+
+    <script>
+        let isLogin = true;
+
+        // Toggle between Sign In and Sign Up modes
+        function toggleMode() {
+            isLogin = !isLogin;
+            
+            // Update UI text
+            const title = isLogin ? "Sign in" : "Create account";
+            document.getElementById('form-title').innerText = title;
+            document.getElementById('auth-btn').innerText = title;
+            document.getElementById('toggle-text').innerText = isLogin ? "New to Marketplace Services?" : "Already have an account?";
+            document.getElementById('toggle-btn').innerText = isLogin ? "Create a new account" : "Sign in to an existing account";
+            
+            // Show/hide role selector and reset errors
+            document.getElementById('role-container').style.display = isLogin ? "none" : "block";
+            document.getElementById('error-msg').classList.add('hidden');
+        }
+
+        // Handle the authentication action
+        async function handleAuth() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const role = document.getElementById('role').value;
+            const errorMsg = document.getElementById('error-msg');
+            const errorText = document.getElementById('error-text');
+            const authBtn = document.getElementById('auth-btn');
+            
+            // Reset state
+            errorMsg.classList.add('hidden');
+            authBtn.innerText = "Processing...";
+            authBtn.classList.add('opacity-70', 'cursor-not-allowed');
+
+            try {
+                if (isLogin) {
+                    // Sign In Flow using supabaseApp
+                    const { data, error } = await supabaseApp.auth.signInWithPassword({ email, password });
+                    if (error) throw error;
+                    
+                    // Retrieve role from profiles table for routing
+                    const { data: profile, error: profileError } = await supabaseApp
+                        .from('profiles')
+                        .select('role')
+                        .eq('id', data.user.id)
+                        .single();
+                        
+                    if (profileError) throw profileError;
+                    routeUser(profile.role);
+                } else {
+                    // Sign Up Flow using supabaseApp
+                    const { data, error } = await supabaseApp.auth.signUp({ email, password });
+                    if (error) throw error;
+
+                    if (!data.user) throw new Error("Signup failed. Please try again.");
+
+                    // Insert user profile with selected role
+                    const { error: profileError } = await supabaseApp.from('profiles').insert([
+                        { id: data.user.id, email: email, role: role }
+                    ]);
+                    if (profileError) throw profileError;
+
+                    routeUser(role);
+                }
+            } catch (err) {
+                // Display specific console-style error
+                errorText.innerText = err.message;
+                errorMsg.classList.remove('hidden');
+                authBtn.innerText = isLogin ? "Sign in" : "Create account";
+                authBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+            }
+        }
+
+        // Redirect user based on their specific role
+        function routeUser(role) {
+            const routes = {
+                'customer': 'buyer.html',
+                'seller': 'seller.html',
+                'driver': 'dispatch.html'
+            };
+            window.location.href = routes[role] || 'index.html';
+        }
+    <    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-client.js"></script>
+
+    <script>
+        let isLogin = true;
+
+        // Toggle between Sign In and Sign Up modes
+        function toggleMode() {
+            isLogin = !isLogin;
+            
+            // Update UI text
+            const title = isLogin ? "Sign in" : "Create account";
+            document.getElementById('form-title').innerText = title;
+            document.getElementById('auth-btn').innerText = title;
+            document.getElementById('toggle-text').innerText = isLogin ? "New to Marketplace Services?" : "Already have an account?";
+            document.getElementById('toggle-btn').innerText = isLogin ? "Create a new account" : "Sign in to an existing account";
+            
+            // Show/hide role selector and reset errors
+            document.getElementById('role-container').style.display = isLogin ? "none" : "block";
+            document.getElementById('error-msg').classList.add('hidden');
+        }
+
+        // Handle the authentication action
+        async function handleAuth() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const role = document.getElementById('role').value;
+            const errorMsg = document.getElementById('error-msg');
+            const errorText = document.getElementById('error-text');
+            const authBtn = document.getElementById('auth-btn');
+            
+            // Reset state
+            errorMsg.classList.add('hidden');
+            authBtn.innerText = "Processing...";
+            authBtn.classList.add('opacity-70', 'cursor-not-allowed');
+
+            try {
+                if (isLogin) {
+                    // Sign In Flow using supabaseApp
+                    const { data, error } = await supabaseApp.auth.signInWithPassword({ email, password });
+                    if (error) throw error;
+                    
+                    // Retrieve role from profiles table for routing
+                    const { data: profile, error: profileError } = await supabaseApp
+                        .from('profiles')
+                        .select('role')
+                        .eq('id', data.user.id)
+                        .single();
+                        
+                    if (profileError) throw profileError;
+                    routeUser(profile.role);
+                } else {
+                    // Sign Up Flow using supabaseApp
+                    const { data, error } = await supabaseApp.auth.signUp({ email, password });
+                    if (error) throw error;
+
+                    if (!data.user) throw new Error("Signup failed. Please try again.");
+
+                    // Insert user profile with selected role
+                    const { error: profileError } = await supabaseApp.from('profiles').insert([
+                        { id: data.user.id, email: email, role: role }
+                    ]);
+                    if (profileError) throw profileError;
+
+                    routeUser(role);
+                }
+            } catch (err) {
+                // Display specific console-style error
+                errorText.innerText = err.message;
+                errorMsg.classList.remove('hidden');
+                authBtn.innerText = isLogin ? "Sign in" : "Create account";
+                authBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+            }
+        }
+
+        // Redirect user based on their specific role
+        function routeUser(role) {
+            const routes = {
+                'customer': 'buyer.html',
+                'seller': 'seller.html',
+                'driver': 'dispatch.html'
+            };
+            window.location.href = routes[role] || 'index.html';
+        }
+    <    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-client.js"></script>
+
+    <script>
+        let isLogin = true;
+
+        // Toggle between Sign In and Sign Up modes
+        function toggleMode() {
+            isLogin = !isLogin;
+            
+            // Update UI text
+            const title = isLogin ? "Sign in" : "Create account";
+            document.getElementById('form-title').innerText = title;
+            document.getElementById('auth-btn').innerText = title;
+            document.getElementById('toggle-text').innerText = isLogin ? "New to Marketplace Services?" : "Already have an account?";
+            document.getElementById('toggle-btn').innerText = isLogin ? "Create a new account" : "Sign in to an existing account";
+            
+            // Show/hide role selector and reset errors
+            document.getElementById('role-container').style.display = isLogin ? "none" : "block";
+            document.getElementById('error-msg').classList.add('hidden');
+        }
+
+        // Handle the authentication action
+        async function handleAuth() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const role = document.getElementById('role').value;
+            const errorMsg = document.getElementById('error-msg');
+            const errorText = document.getElementById('error-text');
+            const authBtn = document.getElementById('auth-btn');
+            
+            // Reset state
+            errorMsg.classList.add('hidden');
+            authBtn.innerText = "Processing...";
+            authBtn.classList.add('opacity-70', 'cursor-not-allowed');
+
+            try {
+                if (isLogin) {
+                    // Sign In Flow using supabaseApp
+                    const { data, error } = await supabaseApp.auth.signInWithPassword({ email, password });
+                    if (error) throw error;
+                    
+                    // Retrieve role from profiles table for routing
+                    const { data: profile, error: profileError } = await supabaseApp
+                        .from('profiles')
+                        .select('role')
+                        .eq('id', data.user.id)
+                        .single();
+                        
+                    if (profileError) throw profileError;
+                    routeUser(profile.role);
+                } else {
+                    // Sign Up Flow using supabaseApp
+                    const { data, error } = await supabaseApp.auth.signUp({ email, password });
+                    if (error) throw error;
+
+                    if (!data.user) throw new Error("Signup failed. Please try again.");
+
+                    // Insert user profile with selected role
+                    const { error: profileError } = await supabaseApp.from('profiles').insert([
+                        { id: data.user.id, email: email, role: role }
+                    ]);
+                    if (profileError) throw profileError;
+
+                    routeUser(role);
+                }
+            } catch (err) {
+                // Display specific console-style error
+                errorText.innerText = err.message;
+                errorMsg.classList.remove('hidden');
+                authBtn.innerText = isLogin ? "Sign in" : "Create account";
+                authBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+            }
+        }
+
+        // Redirect user based on their specific role
+        function routeUser(role) {
+            const routes = {
+                'customer': 'buyer.html',
+                'seller': 'seller.html',
+                'driver': 'dispatch.html'
+            };
+            window.location.href = routes[role] || 'index.html';
+        }
     </script>
+</body>
+</html>
+>
+</body>
+</html>
+>
+</body>
+</html>
+
 </body>
 </html>
