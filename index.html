@@ -3,243 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign In | Marketplace Services Console</title>
+    <title>Login | Marketplace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --aws-navy: #232f3e;
-            --aws-dark-blue: #16191f;
-            --background-grey: #f2f3f3;
-            --text-black: #16191f;
-            --aws-orange: #ec7211;
-            --border-grey: #d5dbdb;
-            --card-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-            --aws-orange-hover: #eb5f07;
-            --text-grey: #545b64;
-            --secondary-btn-hover: #fafafa;
-            --focus-blue: #0073bb;
-        }
-
-        body {
-            font-family: "Amazon Ember", "Helvetica Neue", Roboto, Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--background-grey);
-            color: var(--text-black);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* Header */
-        header {
-            background-color: var(--aws-navy);
-            color: #fff;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            padding: 0 24px;
-            box-sizing: border-box;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        header .brand-logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        /* Tilted Square Icon with square hole */
-        header .brand-logo svg {
-            height: 28px;
-            width: auto;
-            fill: #fff;
-        }
-
-        header h1 {
-            font-size: 18px;
-            font-weight: 500;
-            margin: 0;
-            line-height: 60px;
-        }
-
-        /* Main Content */
-        main {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 40px 24px;
-            box-sizing: border-box;
-        }
-
-        /* Central Card */
-        .sign-in-card {
-            background-color: #fff;
-            border: 1px solid var(--border-grey);
-            border-radius: 2px;
-            width: 100%;
-            max-width: 380px;
-            padding: 32px;
-            box-sizing: border-box;
-            box-shadow: var(--card-shadow);
-        }
-
-        .sign-in-card h2 {
-            font-size: 28px;
-            font-weight: 400;
-            margin: 0 0 24px 0;
-            color: var(--text-black);
-        }
-
-        /* Form Elements */
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        .input-group label {
-            display: block;
-            font-size: 13px;
-            font-weight: 700;
-            margin-bottom: 4px;
-            color: var(--text-black);
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 7px 12px;
-            font-size: 14px;
-            border: 1px solid #879596;
-            border-radius: 2px;
-            box-sizing: border-box;
-            box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
-            color: var(--text-black);
-        }
-
-        .input-group input::placeholder {
-            color: #879596;
-        }
-
-        .input-group input:focus {
-            outline: none;
-            border-color: var(--focus-blue);
-            box-shadow: inset 0 1px 2px rgba(0,0,0,0.1), 0 0 0 1px var(--focus-blue);
-        }
-
-        /* Primary Button (AWS Orange) */
-        .primary-button {
-            display: block;
-            width: 100%;
-            background-color: var(--aws-orange);
-            color: #fff;
-            border: 1px solid #b65a0c;
-            border-radius: 2px;
-            padding: 6px 12px;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            box-sizing: border-box;
-            text-align: center;
-            text-decoration: none;
-            transition: background-color 0.1s;
-            margin-top: 10px;
-        }
-
-        .primary-button:hover {
-            background-color: var(--aws-orange-hover);
-        }
-
-        /* Secondary Content Below Card */
-        .secondary-actions {
-            width: 100%;
-            max-width: 380px;
-            margin: 24px auto 0;
-            text-align: center;
-        }
-
-        .divider {
-            display: flex;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .divider .line {
-            flex-grow: 1;
-            height: 1px;
-            background-color: var(--border-grey);
-        }
-
-        .divider p {
-            font-size: 13px;
-            color: var(--text-grey);
-            margin: 0 8px;
-        }
-
-        /* Secondary Button (White) */
-        .secondary-button {
-            display: block;
-            width: 100%;
-            background-color: #fff;
-            color: var(--text-black);
-            border: 1px solid var(--border-grey);
-            border-radius: 2px;
-            padding: 6px 12px;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            box-sizing: border-box;
-            text-align: center;
-            text-decoration: none;
-            transition: background-color 0.1s;
-            box-shadow: var(--card-shadow);
-        }
-
-        .secondary-button:hover {
-            background-color: var(--secondary-btn-hover);
-        }
-
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body>
+<body class="bg-[#111214] text-white min-h-screen flex flex-col">
 
-    <header>
-        <div class="brand-logo">
-            <svg viewBox="0 0 24 24" fill="#fff" xmlns="http://www.w3.org/2000/svg">
-                <path d="M4.646 2.354l16.999 4.555-4.555 16.999-16.999-4.555 4.555-16.999zm8.5 10.777a2.278 2.278 0 100-4.555 2.278 2.278 0 000 4.555z"/>
+    <header class="bg-[#232527] h-[50px] flex items-center px-6 sticky top-0 z-50">
+        <div class="flex items-center gap-2">
+            <svg class="w-8 h-8 text-[#00b06f]" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 0L24 0L18 6L6 6L0 0Z" fill="currentColor" fill-opacity="0.9"/>
+                <path d="M24 0L24 24L18 18L18 6L24 0Z" fill="currentColor" fill-opacity="0.6"/>
+                <path d="M24 24L0 24L6 18L18 18L24 24Z" fill="currentColor" fill-opacity="0.4"/>
+                <path d="M0 24L0 0L6 6L6 18L0 24Z" fill="currentColor" fill-opacity="0.75"/>
             </svg>
-            <h1>Marketplace Services</h1>
+            <h1 class="text-[20px] font-extrabold tracking-tight text-white ml-1">Marketplace</h1>
         </div>
     </header>
 
-    <main>
-        <div class="sign-in-card">
-            <h2>Sign in</h2>
-            <form action="[your sign-in handler]" method="post">
-                <div class="input-group">
-                    <label for="email">Email address</label>
-                    <input type="email" id="email" name="email" placeholder="user@example.com" required>
+    <main class="flex-1 flex flex-col items-center pt-16 px-4">
+        
+        <div class="w-full max-w-[400px] bg-[#232527] rounded-lg p-8 shadow-xl">
+            <h2 class="text-2xl font-bold mb-6 text-center text-white" id="form-title">Login to Marketplace</h2>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-[13px] font-semibold text-[#bdbebe] mb-1.5">Email</label>
+                    <input type="email" id="email" class="w-full bg-[#111214] border border-[#bdbebe] rounded-md px-3 py-2.5 focus:border-white focus:ring-1 focus:ring-white focus:outline-none text-[15px] text-white transition-colors placeholder-[#757678]" placeholder="Email" />
                 </div>
-                <div class="input-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="••••••••" required>
+                
+                <div>
+                    <label class="block text-[13px] font-semibold text-[#bdbebe] mb-1.5">Password</label>
+                    <input type="password" id="password" class="w-full bg-[#111214] border border-[#bdbebe] rounded-md px-3 py-2.5 focus:border-white focus:ring-1 focus:ring-white focus:outline-none text-[15px] text-white transition-colors placeholder-[#757678]" placeholder="Password" />
                 </div>
-                <button type="submit" class="primary-button">Sign in</button>
-            </form>
-        </div>
 
-        <div class="secondary-actions">
-            <div class="divider">
-                <div class="line"></div>
-                <p>New to Marketplace Services?</p>
-                <div class="line"></div>
+                <div id="role-container" class="hidden space-y-1.5">
+                    <label class="block text-[13px] font-semibold text-[#bdbebe]">Account Type</label>
+                    <select id="role" class="w-full bg-[#111214] border border-[#bdbebe] rounded-md px-3 py-2.5 focus:border-white focus:ring-1 focus:ring-white focus:outline-none text-[15px] text-white transition-colors">
+                        <option value="customer">Customer</option>
+                        <option value="seller">Seller</option>
+                        <option value="driver">Delivery Driver</option>
+                    </select>
+                </div>
+
+                <button id="auth-btn" onclick="handleAuth()" class="w-full bg-[#00b06f] hover:bg-[#008f5a] text-white rounded-md px-4 py-3 font-bold text-[16px] mt-4 transition-colors">
+                    Log In
+                </button>
             </div>
-            <a href="[your account creation page]" class="secondary-button">Create a new account</a>
+
+            <div class="my-6 border-t border-[#393b3d]"></div>
+
+            <div class="text-center space-y-4">
+                <p id="toggle-text" class="text-[14px] text-[#bdbebe]">Don't have an account?</p>
+                <button onclick="toggleMode()" id="toggle-btn" class="w-full bg-transparent hover:bg-[#393b3d] border border-[#bdbebe] text-white rounded-md px-4 py-2.5 font-bold text-[15px] transition-colors">
+                    Sign Up
+                </button>
+            </div>
+        </div>
+        
+        <div id="error-msg" class="hidden w-full max-w-[400px] mt-4 bg-[#f87171] bg-opacity-10 border border-[#f87171] text-[#fca5a5] px-4 py-3 rounded-md text-[14px] font-medium text-center">
+            <span id="error-text"></span>
         </div>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-client.js"></script>
+
+    <script>
+        let isLogin = true;
+
+        function toggleMode() {
+            isLogin = !isLogin;
+            
+            const title = isLogin ? "Login to Marketplace" : "Sign Up for Marketplace";
+            document.getElementById('form-title').innerText = title;
+            document.getElementById('auth-btn').innerText = isLogin ? "Log In" : "Sign Up";
+            document.getElementById('toggle-text').innerText = isLogin ? "Don't have an account?" : "Already have an account?";
+            document.getElementById('toggle-btn').innerText = isLogin ? "Sign Up" : "Log In";
+            
+            document.getElementById('role-container').style.display = isLogin ? "none" : "block";
+            document.getElementById('error-msg').classList.add('hidden');
+        }
+
+        async function handleAuth() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const role = document.getElementById('role').value;
+            const errorMsg = document.getElementById('error-msg');
+            const errorText = document.getElementById('error-text');
+            const authBtn = document.getElementById('auth-btn');
+            
+            errorMsg.classList.add('hidden');
+            authBtn.innerText = "Processing...";
+            authBtn.classList.add('opacity-70', 'cursor-not-allowed');
+
+            try {
+                if (isLogin) {
+                    const { data, error } = await supabaseApp.auth.signInWithPassword({ email, password });
+                    if (error) throw error;
+                    
+                    const { data: profile, error: profileError } = await supabaseApp
+                        .from('profiles')
+                        .select('role')
+                        .eq('id', data.user.id)
+                        .single();
+                        
+                    if (profileError) throw profileError;
+                    routeUser(profile.role);
+                } else {
+                    const { data, error } = await supabaseApp.auth.signUp({ email, password });
+                    if (error) throw error;
+
+                    if (!data.user) throw new Error("Signup failed. Please try again.");
+
+                    const { error: profileError } = await supabaseApp.from('profiles').insert([
+                        { id: data.user.id, email: email, role: role }
+                    ]);
+                    if (profileError) throw profileError;
+
+                    routeUser(role);
+                }
+            } catch (err) {
+                errorText.innerText = err.message;
+                errorMsg.classList.remove('hidden');
+                authBtn.innerText = isLogin ? "Log In" : "Sign Up";
+                authBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+            }
+        }
+
+        function routeUser(role) {
+            const routes = {
+                'customer': 'buyer.html',
+                'seller': 'seller.html',
+                'driver': 'dispatch.html'
+            };
+            window.location.href = routes[role] || 'index.html';
+        }
+    </script>
 </body>
 </html>
