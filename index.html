@@ -103,13 +103,18 @@
                     if (error) throw error;
                     
                     const { data: profile, error: profileError } = await supabaseApp
-                        .from('profiles')
-                        .select('role')
-                        .eq('id', data.user.id)
-                        .single();
-                        
-                    if (profileError) throw profileError;
-                    routeUser(profile.role);
+    .from('profiles')
+    .select('role')
+    .eq('id', data.user.id)
+    .maybeSingle(); // Changed to maybeSingle()
+    
+if (profileError) throw profileError;
+
+// If the profile exists, use their role. If not, default to 'customer'
+const userRole = profile ? profile.role : 'customer'; 
+
+routeUser(userRole);
+
                 } else {
                     const { data, error } = await supabaseApp.auth.signUp({ email, password });
                     if (error) throw error;
