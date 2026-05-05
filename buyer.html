@@ -1,41 +1,3 @@
-<button onclick="handleLogout()" class="text-xs text-[#f87171] hover:underline mt-auto mb-4">
-    Logout
-</button>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-client.js"></script>
-<script>
-    (async function protectPage() {
-        // 1. Get current session
-        const { data: { session } } = await supabaseApp.auth.getSession();
-        
-        if (!session) {
-            // Not logged in? Send to login
-            window.location.href = 'index.html';
-            return;
-        }
-
-        // 2. Check Role
-        const { data: profile } = await supabaseApp
-            .from('profiles')
-            .select('role')
-            .eq('id', session.user.id)
-            .single();
-
-        const currentPage = window.location.pathname;
-        const role = profile?.role;
-
-        // 3. Logic for Blocking
-        // Check if the role matches the specific file they are trying to view
-        if (role === 'seller' && !currentPage.includes('seller.html')) {
-            window.location.href = 'seller.html';
-        } else if (role === 'driver' && !currentPage.includes('dispatch.html')) {
-            window.location.href = 'dispatch.html';
-        } else if (role === 'customer' && !currentPage.includes('buyer.html')) {
-            window.location.href = 'buyer.html';
-        }
-    })();
-</script>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,7 +23,7 @@
             </svg>
         </div>
 
-        <nav class="flex flex-col gap-6 w-full">
+        <nav class="flex flex-col gap-6 w-full flex-1">
             <a href="#" class="flex flex-col items-center gap-1 group">
                 <div class="w-10 h-10 rounded-full flex items-center justify-center bg-[#393b3d] text-white">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
@@ -72,7 +34,6 @@
             <a href="#" onclick="openMessages()" class="flex flex-col items-center gap-1 group">
                 <div class="w-10 h-10 rounded-full flex items-center justify-center text-[#bdbebe] group-hover:bg-[#393b3d] group-hover:text-white transition-colors relative">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
-                    <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-[#00b06f] rounded-full border-2 border-[#232527]"></span>
                 </div>
                 <span class="text-[11px] font-semibold text-[#bdbebe] group-hover:text-white">Messages</span>
             </a>
@@ -83,21 +44,22 @@
                 </div>
                 <span class="text-[11px] font-semibold text-[#bdbebe] group-hover:text-white">Orders</span>
             </a>
-
-            <a href="#" class="flex flex-col items-center gap-1 group mt-2">
-                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-[#00b06f] to-blue-500 border-2 border-transparent group-hover:border-white transition-colors"></div>
-                <span class="text-[11px] font-semibold text-[#bdbebe] group-hover:text-white">Profile</span>
-            </a>
         </nav>
+
+        <button onclick="handleLogout()" class="mt-auto mb-4 flex flex-col items-center gap-1 group">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center text-[#f87171] hover:bg-red-500/10 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+            </div>
+            <span class="text-[11px] font-semibold text-[#f87171]">Logout</span>
+        </button>
     </aside>
 
     <main class="flex-1 flex flex-col min-w-0">
-        
         <header class="h-[70px] px-8 flex items-center justify-between sticky top-0 bg-[#111214]/95 backdrop-blur z-10 border-b border-[#232527]">
             <h1 class="text-[24px] font-bold text-white tracking-tight">Home</h1>
             
             <div class="max-w-2xl w-full mx-8">
-                <form id="search-form" onsubmit="handleSearch(event)" class="relative flex items-center w-full h-10 rounded-full focus-within:shadow-lg bg-[#232527] overflow-hidden border border-[#393b3d] focus-within:border-[#00b06f] transition-colors">
+                <form id="search-form" onsubmit="handleSearch(event)" class="relative flex items-center w-full h-10 rounded-full bg-[#232527] border border-[#393b3d] focus-within:border-[#00b06f] transition-colors">
                     <div class="grid place-items-center h-full w-12 text-[#757678]">
                         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                     </div>
@@ -110,10 +72,6 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                     <span id="cart-count" class="absolute top-0 right-0 w-4 h-4 text-[10px] font-bold flex items-center justify-center bg-[#00b06f] text-white rounded-full border-2 border-[#111214]">0</span>
                 </button>
-
-                <button class="bg-[#232527] border border-[#393b3d] hover:bg-[#393b3d] text-white p-2 rounded-full transition-colors">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                </button>
             </div>
         </header>
 
@@ -125,9 +83,8 @@
                         <p class="text-[14px] text-[#bdbebe]">Real items from verified sellers</p>
                     </div>
                 </div>
-                
                 <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                    <p class="text-[#bdbebe] col-span-full">Loading products from Supabase...</p>
+                    <p class="text-[#bdbebe] col-span-full">Loading products...</p>
                 </div>
             </section>
         </div>
@@ -137,110 +94,79 @@
     <script src="supabase-client.js"></script>
 
     <script>
-        // --- 1. DYNAMIC PRODUCT FETCHING ---
+        // --- 1. PROTECTION LOGIC ---
+        (async function protectPage() {
+            const { data: { session } } = await supabaseApp.auth.getSession();
+            if (!session) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            const { data: profile } = await supabaseApp
+                .from('profiles')
+                .select('role')
+                .eq('id', session.user.id)
+                .single();
+
+            const role = profile?.role;
+            if (role === 'seller') {
+                window.location.href = 'seller.html';
+            } else if (role === 'driver') {
+                window.location.href = 'dispatch.html';
+            }
+        })();
+
+        // --- 2. LOGOUT LOGIC ---
+        async function handleLogout() {
+            await supabaseApp.auth.signOut();
+            window.location.href = 'index.html';
+        }
+
+        // --- 3. PRODUCT FETCHING ---
         async function loadProducts(searchQuery = '') {
             const grid = document.getElementById('products-grid');
-            
             try {
-                // Fetch from your actual Supabase 'products' table
-                let query = supabaseApp.from('products').select(`
-                    id, 
-                    title, 
-                    price, 
-                    image_url, 
-                    seller_id,
-                    profiles!seller_id(email) 
-                `);
-
-                // If user is searching, filter the titles
-                if (searchQuery) {
-                    query = query.ilike('title', `%${searchQuery}%`);
-                }
-
+                let query = supabaseApp.from('products').select(`*, profiles:seller_id(email)`);
+                if (searchQuery) query = query.ilike('title', `%${searchQuery}%`);
+                
                 const { data: products, error } = await query;
-
                 if (error) throw error;
 
-                // Clear the loading text
-                grid.innerHTML = '';
+                grid.innerHTML = products.length ? '' : '<p class="text-[#bdbebe] col-span-full">No products found.</p>';
 
-                if (products.length === 0) {
-                    grid.innerHTML = `<p class="text-[#bdbebe] col-span-full">No products found.</p>`;
-                    return;
-                }
-
-                // Loop through the database data and build the HTML cards
                 products.forEach(product => {
-                    // Fallback image if seller didn't upload one
-                    const imgUrl = product.image_url || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80';
-                    const sellerEmail = product.profiles ? product.profiles.email : 'Unknown Seller';
-
-                    const cardHTML = `
-                        <div class="group flex flex-col bg-[#232527] rounded-xl overflow-hidden border border-[#393b3d] hover:border-[#00b06f] transition-colors pb-4">
-                            <div class="w-full aspect-[4/3] bg-[#111214] mb-3 relative overflow-hidden cursor-pointer" onclick="viewProduct('${product.id}')">
-                                <img src="${imgUrl}" alt="${product.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                    const imgUrl = product.image_url || 'https://via.placeholder.com/300';
+                    const sellerEmail = product.profiles ? product.profiles.email : 'Unknown';
+                    
+                    grid.innerHTML += `
+                        <div class="bg-[#232527] rounded-xl overflow-hidden border border-[#393b3d] p-4 flex flex-col">
+                            <img src="${imgUrl}" class="w-full aspect-square object-cover rounded-lg mb-3">
+                            <h3 class="font-bold text-white mb-1">${product.title}</h3>
+                            <p class="text-xs text-[#757678] mb-3">Seller: ${sellerEmail}</p>
+                            <div class="flex items-center justify-between mt-auto">
+                                <span class="text-[#00b06f] font-bold">$${product.price}</span>
+                                <button onclick="addToCart('${product.id}')" class="bg-[#00b06f] text-white text-xs font-bold px-3 py-1.5 rounded-md">+ Add</button>
                             </div>
-                            <div class="px-4 flex-1 flex flex-col">
-                                <h3 class="font-bold text-[15px] leading-tight mb-1 text-white cursor-pointer hover:underline" onclick="viewProduct('${product.id}')">${product.title}</h3>
-                                <p class="text-[12px] text-[#757678] truncate mb-2">Sold by: ${sellerEmail}</p>
-                                
-                                <div class="flex items-center justify-between mt-auto pt-2">
-                                    <span class="text-[#00b06f] font-bold text-[16px]">$${product.price.toFixed(2)}</span>
-                                    <button onclick="addToCart('${product.id}')" class="bg-[#393b3d] hover:bg-[#00b06f] text-white text-xs font-bold px-3 py-1.5 rounded-md transition-colors">
-                                        + Add
-                                    </button>
-                                </div>
-                                <button onclick="startChat('${product.seller_id}')" class="w-full mt-3 bg-transparent border border-[#393b3d] hover:bg-[#393b3d] text-[#bdbebe] hover:text-white text-xs font-bold px-3 py-2 rounded-md transition-colors flex items-center justify-center gap-1">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
-                                    Message Seller
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                    grid.insertAdjacentHTML('beforeend', cardHTML);
+                        </div>`;
                 });
-
             } catch (err) {
-                console.error("Error loading products:", err);
-                grid.innerHTML = `<p class="text-[#f87171] col-span-full">Error loading products. Make sure your 'products' table exists in Supabase.</p>`;
+                grid.innerHTML = `<p class="text-red-500 col-span-full">Error loading products.</p>`;
             }
         }
 
-        // --- 2. SEARCH FUNCTIONALITY ---
+        // --- 4. UTILITIES ---
         function handleSearch(e) {
-            e.preventDefault(); // Prevent page reload
-            const query = document.getElementById('search-input').value;
-            loadProducts(query);
+            e.preventDefault();
+            loadProducts(document.getElementById('search-input').value);
         }
 
-        // --- 3. CART FUNCTIONALITY (Local State for now) ---
         let cartItems = 0;
-        function addToCart(productId) {
-            // In a real app, you'd save this to a 'cart' table in Supabase or localStorage
+        function addToCart() {
             cartItems++;
             document.getElementById('cart-count').innerText = cartItems;
-            // Optional: Show a nice toast notification here!
-        }
-        function openCart() {
-            alert(`You have ${cartItems} items in your cart. We will build the checkout page next!`);
         }
 
-        // --- 4. DIRECT MESSAGING (DM) ROUTING ---
-        function startChat(sellerId) {
-            // This would navigate to a dedicated messages page or open a modal
-            alert(`Opening chat with Seller ID: ${sellerId}\n\nTo make this work, we need a 'messages' table in Supabase!`);
-        }
-        function openMessages() {
-            alert("Opening your inbox!");
-        }
-        function viewProduct(productId) {
-            alert("Navigate to product detail page for ID: " + productId);
-        }
-
-        // Run this when the page loads!
-        window.addEventListener('DOMContentLoaded', () => {
-            loadProducts();
-        });
+        window.onload = () => loadProducts();
     </script>
 </body>
 </html>
